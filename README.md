@@ -1,5 +1,11 @@
-# FB_MKPLC_Scraper
-Node.js app to scrape the facebook marketplace
+# Facebook Marketplace Scraper
+Contract is for a tool used to scrape the facebook marketplace
+
+Purpose of tool: To find facebook marketplace listings given a keyword, zipcode, and radius
+
+Final product should allow user to open the tool, then search for a keyword and zipcode and radius 
+
+This tool will use Node.js to complete this project.
 
 # 1.
 Open Marketplace 
