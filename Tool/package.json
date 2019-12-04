@@ -1,0 +1,21 @@
+{
+  "name": "facebooktracker",
+  "version": "1.0.0",
+  "description": "Scrapes Facebook Marketplace",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "live": "sudo node index.js live",
+    "dev": "nodemon index dev"
+  },
+  "author": "Travis \tC. J. Gray",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.1",
+    "puppeteer": "^2.0.0",
+    "zipcodes": "^8.0.0"
+  }
+}
