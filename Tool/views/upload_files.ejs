@@ -1,0 +1,23 @@
+ 
+<html> 
+	<head>
+		<title>Upload Files</title>
+	</head>
+	<body>
+		<h1>Simple FaceBook Tool: Upload Files</h1></br>
+		<!-- <form action="results" method="get">
+            <input type="text" name="keyword" placeholder="keyword" required/><br></br>
+            <input type="text" name="zipcode" placeholder="Zip Code" required/></br></br>
+            <input type="text" name="radius" placeholder="Radius" required/></br></br>
+            <input type="submit" />
+        </form> -->
+	    <form ref='uploadForm' 
+			id='uploadForm' 
+			action='/upload' 
+			method='post' 
+			encType="multipart/form-data">
+				Upload a file fill of zip codes: <input type="file" name="Locations_File" required/></br></br>
+				<input type='submit' value='Upload!' />
+		</form>  
+	</body>
+</html>

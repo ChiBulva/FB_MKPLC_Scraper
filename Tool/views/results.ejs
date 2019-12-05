@@ -3,7 +3,11 @@
   <head><title><%= title %></title></head>
   <body>
     <h1>Simple FaceBook Scraper: Results</h1></br>
-
+	<form
+      action='/homepage' 
+      method='get'>
+        <input type='submit' value='Back To homepage' />
+    </form>  
 	<div> 
 		<% if (locals.keyword) { %>
             Keyword: <%= keyword %>

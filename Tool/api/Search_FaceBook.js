@@ -37,7 +37,7 @@ async function Find_Zip_URL(Zip_Code) {
 async function Find_Zip_List_URL(Zip_Code_List, Key_Word) {
 
     browser = await puppeteer.launch({ headless: HEADLESS });
-    const page = await browser.newPage();
+    //onst page = await browser.newPage();
 
     var Zip_Code_List_URLs = [];
 
@@ -45,6 +45,7 @@ async function Find_Zip_List_URL(Zip_Code_List, Key_Word) {
 
     //Zip_Code_List.forEach( async function(Zip_Code){
     for (var Zip_Code of Zip_Code_List) {
+		const page = await browser.newPage();
 
         await page.goto('https://www.facebook.com/marketplace/');
         try {
@@ -71,6 +72,9 @@ async function Find_Zip_List_URL(Zip_Code_List, Key_Word) {
 
             // Adds URL to list and adds the search query to the URL
             Zip_Code_List_URLs.push(page.url() + `search/?query=${Key_Word}&vertical=C2C&sort=BEST_MATCH`);
+			
+			// Requested by user
+			await page.goto(page.url() + `search/?query=${Key_Word}&vertical=C2C&sort=BEST_MATCH`);
         }
         catch {
             console.log('No Zip Code Found');
@@ -80,8 +84,8 @@ async function Find_Zip_List_URL(Zip_Code_List, Key_Word) {
 
     console.log("After Zip Code Function");
 
-    await page.close();
-    await browser.close();
+    //await page.close();
+    //await browser.close();
 
     return Zip_Code_List_URLs;
 }
