@@ -1,30 +1,133 @@
+<!DOCTYPE html>
+<html class="g-html-fit g-border-color-black">
+	<head>
+		
+		<!-- Title of the page if it is proided -->
+		
+		<title>
+			<% if (locals.title) { %>
+				<%= title %>
+			<% } %>
+		</title>
+	
+		<!-- Add css object here -->
+		
+		<style>
+			<% if (locals.css) { %>
+				<%= css %>
+			<% } %>
+		</style>
 
-<html>
-  <head><title><%= title %></title></head>
-  <body>
-    <h1>Simple FaceBook Tool: <%= title %></h1></br>
-    <form action="results" method="get">
-		<input type="text" name="keyword" placeholder="keyword" required/><br></br>
-		<% if (locals.Files_Exist) { %>
-			<input type="submit" />
-		<% } %>
-		<% if (!locals.Files_Exist) { %>
-			You'll need to upload a file full of zip codes
-		<% } %>	
-            
-    </form> 
-	<form      
-      action='/upload_files' 
-      method='get'>
-        <input type='submit' value='Upload New Files' />
-    </form>  
-	<% if (locals.List_Of_Zips) { %>
-	
-		Current List of Zip Codes:</br></br>
-		<%= List_Of_Zips %>
-	<% } %>
-	<!-- Check to see if the files exist -->
-	
-	
-  </body>
+	</head>
+
+	<body class="g-height100 g-width100 g-green g-consalas">
+
+		<div class="g-height10 g-width100 g-fb g-centered-text g-responsive-text-5 g-FL">	
+			Simple FaceBook Tool: <% if (locals.title) { %> <%= title %> <% } %>
+		</div>
+
+		<div class="g-height90 g-width100 g-lightgray">
+		
+			<!-- Input a keyword | Left Half of page -->
+						
+			<div class="g-height100 g-width50 g-gray g-FL g-border-color-black">
+
+
+				<form class="g-height100 g-width100" action="results" method="get">
+
+					<!-- 10% -->
+					<input class="g-height10 g-width100" type="text" name="keyword" placeholder="keyword" required/>
+					
+					<!-- 10% -->
+					<% if (locals.Files_Exist) { %>
+						<div class="g-height10 g-width100">
+							<input class="g-height100 g-width70 g-FL" type="submit" value="Submit Search"/>
+							<div class="g-height100 g-width30 g-border-color-orange g-lightorange g-FR">
+								Open Browser toggle: <input type="checkbox" name="browser_toggle" checked/>
+							</div>
+						</div>
+					<% } else{ %> 
+						<div class="g-height10 g-width100">
+							You'll need to upload a	file full of valid locations
+						</div>
+					<% } %>
+
+					<!-- 80% -->
+					<!-- Add results section here -->
+					<% if (locals.Base_URL_List) { %>
+						<div class="g-height80 g-width100 g-lightgreen g-border-color-green">
+							<div class="g-height10 g-width100 g-centered-text g-responsive-text-3 g-green">
+								<% if (locals.keyword) { %>
+									Search results for "<%= keyword %>":
+								<% } %>
+							</div>
+					<% } else { %>
+						<div class="g-height80 g-width100 g-lightyellow g-border-color-yellow">
+							<div class="g-height10 g-width100 g-centered-text g-responsive-text-3 g-yellow">
+								Submit a search to get results here
+							</div>
+					<% } %>
+					
+
+						<div class="g-height90 g-width100 g-scroll-a">
+							<% if (locals.results) { %>
+								
+								<% var count = 0; %>
+								<% results[0].forEach(function(URL){ %>
+									
+									<a class="g-height33- g-width33- g-centered-text g-FL g-no-dec g-border-color-green" href="<%= URL %>" target="_blank">
+										Click to open result for: <br><%= results[1][count] %>
+									</a>
+								
+									<% count = count + 1; %>
+								
+								<% }) %>
+							<% } %>
+						</div>
+
+					</div>
+
+				</form> 
+			</div>
+
+
+			<!-- Upload a new file | Right Half of page -->
+			<div class="g-height100 g-width50 g-darkgray g-FL g-border-color-black">
+
+				<!-- 10% -->
+				<form class="g-height10 g-width100" action='/upload_files' method='get'>
+					<input class="g-height100 g-width100" type='submit' value='Upload New Files' />
+				</form>
+
+				<!-- 80% -->
+				<% if (locals.List_Of_Zips) { %>
+				
+					<!-- 10% -->
+					<div class="g-height10 g-width100 g-green g-centered-text g-responsive-text-3 ">
+						<!-- Check to see if the files exist -->	
+							Current Locations that will be searched: <%= List_Of_Zips.length %> Total
+					</div>
+					<div class="g-height80 g-width100 g-lightgreen g-border-color-green g-scroll-a">
+						<% List_Of_Zips.forEach(function(Location){ %>
+							<%= Location %>
+							</br>
+						<% }) %>
+
+					</div>
+				<% } else { %>
+				
+					<!-- 10% -->
+					<div class="g-height10 g-width100 g-red g-centered-text g-responsive-text-3 ">
+						<!-- Check to see if the files exist -->	
+							You will need to upload a file by clicking button above
+					</div>
+					<div class="g-height80 g-width100 g-lightred g-border-color-red g-scroll-a">
+						Please Upload a file
+					</div>
+				<% } %>
+
+			</div>
+
+		</div>
+	</body>
 </html>

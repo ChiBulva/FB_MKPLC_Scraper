@@ -1,10 +1,28 @@
  
 <html> 
 	<head>
-		<title>Upload Files</title>
+		<!-- Title of the page if it is proided -->
+		
+		<title>
+			<% if (locals.title) { %>
+				<%= title %>
+			<% } %>
+		</title>
+	
+		<!-- Add css object here -->
+		
+		<style>
+			<% if (locals.css) { %>
+				<%= css %>
+			<% } %>
+		</style>
 	</head>
 	<body>
-		<h1>Simple FaceBook Tool: Upload Files</h1></br>
+
+	<h1>
+		Simple FaceBook Tool: <% if (locals.title) { %> <%= title %> <% } %>
+	</h1>
+
 		<!-- <form action="results" method="get">
             <input type="text" name="keyword" placeholder="keyword" required/><br></br>
             <input type="text" name="zipcode" placeholder="Zip Code" required/></br></br>

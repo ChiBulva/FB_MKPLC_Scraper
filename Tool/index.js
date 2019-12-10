@@ -11,10 +11,43 @@
  * 
  *************************************************************************************************************************/
 
+/*
+Possible JSON Object:
+	{
+		title: "Homepage" | "Results" | "Successful Upload" | "Un-Successful Upload",
+		css: "global.css",
+		List_Of_Zips: [
+			take from file given
+		].
+		Files_Exist: "yes",
+		keyword: "Some phrase here",
+
+		Base_URL_List: [
+			
+		],
+
+		Zip_Code_List: [
+			
+		]
+	
+		results: [
+		
+			[
+				List of URL's
+			],
+
+			[
+				List of Zip codes
+			]
+		]
+
+	}
+*/
+
 /*  /   Modules created by Travis C. J. Gray for personal use in this applicaiton
  * /
  */
-const Zip_Code_Functions = require('./api/Zip_Code_Functions.js');
+//const Zip_Code_Functions = require('./api/Zip_Code_Functions.js');
 const Search_FaceBook = require('./api/Search_FaceBook.js');
 
 /*  /   Modules from different NPM/Node.js librarys
@@ -31,6 +64,9 @@ app.use(bodyParser.json());                                     //  BP  ->  supp
 app.use(bodyParser.urlencoded({ extended: true }));             //  BP
 
 app.use(fileUpload());
+
+// include css here 
+var css_global =  fs.readFileSync('./assets/css/global.css', 'utf8');
 
 //   This is the port that the application will run on
 //
@@ -50,10 +86,13 @@ app.set('view engine', 'ejs');
 //
 app.get('/homepage', async (req, res) => {
 	var ejs_variables = {};
-	ejs_variables.title = "homepage";
+    ejs_variables.title = "Homepage";
+
+    // Assign css from here
+    ejs_variables.css = css_global;
 
 	try{
-		ejs_variables.List_Of_Zips = await fs.readFileSync('./assets/Locations_File.txt','utf8');
+		ejs_variables.List_Of_Zips = await fs.readFileSync('./assets/variables/Locations_File.txt', 'utf8').toString().split("\n");
 		ejs_variables.Files_Exist = "yes";
 	}
 	catch {
@@ -73,7 +112,10 @@ app.get('/homepage', async (req, res) => {
 //
 app.get('/upload_files', async (req, res) => {
 	var ejs_variables = {};
-	ejs_variables.title = "upload_files";
+    ejs_variables.title = "upload_files";
+
+    // Assign css from here
+    ejs_variables.css = css_global;
 
     // Optinal Print for error handling 
 	//console.log(testURL);
@@ -86,50 +128,76 @@ app.get('/upload_files', async (req, res) => {
 //  Loads:      ./views/results.ejs
 //
 app.get('/results', async (req, res) => {
+	req.setTimeout(600000);
 
     // Reserve a variable to pass arguments for the EJS component
 	var ejs_variables = {};
 
-    // Grabs viarables passed in through the URL
-    var Key_Word = req.query.keyword.replace(/ /g, "+");
-	var Zip_Code = req.query.zipcode;
-	var Radius = req.query.radius;
+    // Assign css from here
+    ejs_variables.css = css_global;
+	try {
 
-    /* --> */
-    // Assignmnet of EJS variables for results
-	ejs_variables.title = "homepage";
-	ejs_variables.keyword = Key_Word;
-	ejs_variables.zipcode = Zip_Code;
-	ejs_variables.radius = Radius;
+		try {
+			ejs_variables.List_Of_Zips = await fs.readFileSync('./assets/variables/Locations_File.txt', 'utf8').toString().split("\n");
+			ejs_variables.Files_Exist = "yes";
+		}
+		catch {
 
-    // These three variables have to exist to result in a radius
-    /*if (Key_Word) {
+		}
 
-        // Reaches out to ./api/Zip_Code_Functions.js to collect all zipcodes within a range
-		var Zip_Code_List = await Zip_Code_Functions.GetAllZipsInRadius(Zip_Code, Radius);;
+		// Grabs viarables passed in through the URL
+		var Key_Word = req.query.keyword.replace(/ /g, "+");
+		var Browser_Toggle = req.query.browser_toggle;
+		//var Zip_Code = req.query.zipcode;
+		//var Radius = req.query.radius;
 
-        // Adds the new list to ejs item
-        ejs_variables.Zip_Code_List = Zip_Code_List;
+		console.log("\n");
+		console.log(Browser_Toggle);
+		console.log("\n");
 
-        // Optinal Print for error handling 
-        //console.log(ejs_variables);
-    }*/
-		
-	var Zip_Code_List = await fs.readFileSync('./assets/Locations_File.txt','utf8').toString().split("\n");
+		/* --> */
+		// Assignmnet of EJS variables for results
+		ejs_variables.title = "Results";
+		ejs_variables.keyword = Key_Word.replace("+", " ");
+		//ejs_variables.zipcode = Zip_Code;
+		//ejs_variables.radius = Radius;
+
+		// These three variables have to exist to result in a radius
+		/*if (Key_Word) {
 	
-    /* <-- */
+			// Reaches out to ./api/Zip_Code_Functions.js to collect all zipcodes within a range
+			var Zip_Code_List = await Zip_Code_Functions.GetAllZipsInRadius(Zip_Code, Radius);;
+	
+			// Adds the new list to ejs item
+			ejs_variables.Zip_Code_List = Zip_Code_List;
+	
+			// Optinal Print for error handling 
+			//console.log(ejs_variables);
+		}*/
 
-    // Reaches to ./api/Search_FaceBook.js to find base URL's for a list of Zips	
-    var Base_URL_List = await Search_FaceBook.Find_Zip_List_URL(Zip_Code_List, Key_Word);
+		var Zip_Code_List = await fs.readFileSync('./assets/variables/Locations_File.txt', 'utf8').toString().split("\n");
 
-    // Adds the new URL list to ejs item
-	ejs_variables.Base_URL_List = Base_URL_List;
+		/* <-- */
 
-    // Optinal Print for error handling 
-	//console.log(Base_URL_List);
+		// Reaches to ./api/Search_FaceBook.js to find base URL's for a list of Zips	
+		var Results = await Search_FaceBook.Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle);
 
+		console.log(Results);
+
+		// Adds the new URL list to ejs item
+		ejs_variables.Base_URL_List = Results[0];
+		ejs_variables.Zip_Code_List = Results[1];
+		ejs_variables.results = Results;
+		// Optinal Print for error handling
+		//console.log(Base_URL_List);
+	}
+	catch{
+
+	}
     // Render the ./views/results.ejs template usign new ejs object
-	res.render('results', ejs_variables);
+	res.render('homepage', ejs_variables);
+	//res.render('results', ejs_variables);
+
 })
 
 
@@ -153,7 +221,7 @@ app.post('/upload', async (req, res) => {
 
 	Locations_File = req.files.Locations_File;
 
-	Locations_FilePath = __dirname + '/assets/Locations_File.txt';
+	Locations_FilePath = __dirname + '/assets/variables/Locations_File.txt';
 	
 	Locations_File.mv(Locations_FilePath, function(err) {
 		if (err) {

@@ -1,8 +1,6 @@
 const puppeteer = require('puppeteer');
 
-let browser;
-
-const HEADLESS = false;
+//const HEADLESS = true;
 /*
 async function Find_Zip_URL(Zip_Code) {
 
@@ -34,20 +32,40 @@ async function Find_Zip_URL(Zip_Code) {
 	return TargetURL;
 }*/
 
-async function Find_Zip_List_URL(Zip_Code_List, Key_Word) {
+async function Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle) {
 
-    browser = await puppeteer.launch({ headless: HEADLESS });
+    if (Browser_Toggle == "on") {
+        var chromium_args = {
+            headless: false,
+            args: ['--start-maximized'],
+            defaultViewport: null // full screen
+        };
+    } else {
+        var chromium_args = {
+            "headless": true,
+            "args": ["--fast-start", "--disable-extensions", "--no-sandbox"],
+            "ignoreHTTPSErrors": true
+        };
+    }
+
+    const browser = await puppeteer.launch(chromium_args);
+
+    //const browser = await puppeteer.launch();
     //onst page = await browser.newPage();
 
     var Zip_Code_List_URLs = [];
+    var Zip_Code_List_worked = [];
 
     console.log("Before Zip Code Function");
 
     //Zip_Code_List.forEach( async function(Zip_Code){
     for (var Zip_Code of Zip_Code_List) {
-		const page = await browser.newPage();
+        
 
+		const page = await browser.newPage();
+        
         await page.goto('https://www.facebook.com/marketplace/');
+        
         try {
 
             // Type zip code into the correct. Current spot: '._58al'
@@ -72,7 +90,7 @@ async function Find_Zip_List_URL(Zip_Code_List, Key_Word) {
 
             // Adds URL to list and adds the search query to the URL
             Zip_Code_List_URLs.push(page.url() + `search/?query=${Key_Word}&vertical=C2C&sort=BEST_MATCH`);
-			
+            Zip_Code_List_worked.push(Zip_Code);
 			// Requested by user
 			await page.goto(page.url() + `search/?query=${Key_Word}&vertical=C2C&sort=BEST_MATCH`);
         }
@@ -84,10 +102,11 @@ async function Find_Zip_List_URL(Zip_Code_List, Key_Word) {
 
     console.log("After Zip Code Function");
 
-    //await page.close();
-    //await browser.close();
+    if (Browser_Toggle != "on") {
+        await browser.close();
+    }
 
-    return Zip_Code_List_URLs;
+    return [Zip_Code_List_URLs, Zip_Code_List_worked];
 }
 
 module.exports = {

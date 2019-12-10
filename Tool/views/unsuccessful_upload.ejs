@@ -1,9 +1,30 @@
 
 <html>
-  <head><title><%= title %></title></head>
-  <body>
-    <h1>Simple FaceBook Tool: <%= title %></h1></br>
-    <!-- <form action="results" method="get">
+	<head>
+		<!-- Title of the page if it is proided -->
+		
+		<title>
+			<% if (locals.title) { %>
+				<%= title %>
+			<% } %>
+		</title>
+	
+		<!-- Add css object here -->
+		
+		<style>
+			<% if (locals.css) { %>
+				<%= css %>
+			<% } %>
+		</style>
+	</head>  <body>
+    
+	<h1>
+		Simple FaceBook Tool: <% if (locals.title) { %> <%= title %> <% } %>
+	</h1>
+	
+	</br>
+    
+	<!-- <form action="results" method="get">
                     <input type="text" name="keyword" placeholder="keyword" required/><br></br>
                     <input type="text" name="zipcode" placeholder="Zip Code" required/></br></br>
                     <input type="text" name="radius" placeholder="Radius" required/></br></br>

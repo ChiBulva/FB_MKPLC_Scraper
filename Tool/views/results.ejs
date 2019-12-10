@@ -1,53 +1,77 @@
 
 <html>
-  <head><title><%= title %></title></head>
-  <body>
-    <h1>Simple FaceBook Scraper: Results</h1></br>
-	<form
-      action='/homepage' 
-      method='get'>
-        <input type='submit' value='Back To homepage' />
-    </form>  
-	<div> 
-		<% if (locals.keyword) { %>
-            Keyword: <%= keyword %>
-        <% } %>
-	</div>
-	<div> 
-		<% if (locals.zipcode) { %>
-            Zip Code: <%= zipcode %>
-        <% } %>
-	</div>
-	<div> 
-		<% if (locals.radius) { %>
-            Radius: <%= radius %>
-        <% } %>
-	</div>
-	<div> 
-		<% if (locals.Zip_Code_List) { %>
-			Zip Code List:</br>
-		    <% Zip_Code_List.forEach(function(value){ %>
-                <%= value %>
-				</br>
-			<% }) %>
-        <% } %>
-	</div>
-	</br>
-	<div> 
-		<% if (locals.Base_URL_List) { %>
-			Zip Code List:</br>
-		    <% Base_URL_List.forEach(function(Zip){ %>
-                <a href="<%= Zip %>" target="_blank"><%= Zip %></a>
-				</br>
-			<% }) %>
-        <% } %>
-	</div>
+	<head>
+		<!-- Title of the page if it is proided -->
+		
+		<title>
+			<% if (locals.title) { %>
+				<%= title %>
+			<% } %>
+		</title>
 	
-	<div> 
-		<% if (locals.firstURL) { %>
-            Radius: <%= firstURL %>
-        <% } %>
-	</div>
+		<!-- Add css object here -->
+		
+		<style>
+			<% if (locals.css) { %>
+				<%= css %>
+			<% } %>
+		</style>
+	</head>
+	<body>
+		<h1>
+			Simple FaceBook Tool: <% if (locals.title) { %> <%= title %> <% } %>
+		</h1>
+		
+		</br>
+
+		<form action='/homepage' method='get'>
+	        <input type='submit' value='Back To homepage' />
+	    </form>  
+		<div> 
+			<% if (locals.keyword) { %>
+	            Keyword: <%= keyword %>
+			<% } %>
+		</div>
+		<div> 
+			<% if (locals.zipcode) { %>
+	            Zip Code: <%= zipcode %>
+		    <% } %>
+		</div>
+		<div> 
+			<% if (locals.radius) { %>
+				Radius: <%= radius %>
+			<% } %>
+		</div>
+		<div> 
+			<% if (locals.Zip_Code_List) { %>
+				Zip Code List:</br>
+				<% Zip_Code_List.forEach(function(value){ %>
+	                <%= value %>
+					</br>
+				<% }) %>
+			<% } %>
+		</div>
+		
+		</br>
+
+		<div> 
+			<% if (locals.Base_URL_List) { %>
+				Zip Code List:</br>
+			    <% Base_URL_List.forEach(function(Zip){ %>
+					
+					<a href="<%= Zip %>" target="_blank"><%= Zip %></a>
+				
+					</br>
+
+				<% }) %>
+			<% } %>
+		</div>
 	
-  </body>
+		<div> 
+			<% if (locals.firstURL) { %>
+				Radius: <%= firstURL %>
+	        <% } %>
+		</div>
+	
+	</body>
 </html>

@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\api",
+    "\\assets",
+    "\\assets\\css",
+    "\\assets\\variables",
     "\\views"
   ],
-  "SelectedNode": "\\api\\Search_FaceBook.js",
   "PreviewInSolutionExplorer": false
 }
