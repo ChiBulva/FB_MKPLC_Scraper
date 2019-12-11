@@ -1,7 +1,8 @@
-
-<html>
+<!DOCTYPE html>
+<html class="g-html-fit g-border-color-black">
 	<head>
-		<!-- Title of the page if it is proided -->
+		
+		<!-- Title of the page if it is provided -->
 		
 		<title>
 			<% if (locals.title) { %>
@@ -16,30 +17,73 @@
 				<%= css %>
 			<% } %>
 		</style>
-	</head>  <body>
-    
-	<h1>
-		Simple FaceBook Tool: <% if (locals.title) { %> <%= title %> <% } %>
-	</h1>
-	
-	</br>
-    
-	<!-- <form action="results" method="get">
-                    <input type="text" name="keyword" placeholder="keyword" required/><br></br>
-                    <input type="text" name="zipcode" placeholder="Zip Code" required/></br></br>
-                    <input type="text" name="radius" placeholder="Radius" required/></br></br>
-                    <input type="submit" />
-    </form> -->
-	Bad Upload !!! Try7 Again!!!
-	<form      
-      action='/upload_files' 
-      method='get'>
-        <input type='submit' value='Try Again!!!' />
-    </form>  
-	<form
-      action='/homepage' 
-      method='get'>
-        <input type='submit' value='Back To homepage' />
-    </form>  
-  </body>
+
+	</head>
+
+		
+
+	<body class="g-height100 g-width100 g-fblight g-consalas">
+		
+		<!--  --> 
+
+		<div class="g-height3 g-width100">
+			
+		</div>
+
+		<div class="g-height94 g-width100">
+
+		<div class="g-height10 g-width100 g-fb g-centered-text g-text-white g-responsive-text-5 g-FL g-border-color-black">	
+			FaceBook Tool: <% if (locals.title) { %> <%= title %> <% } %>
+		</div>
+
+		<div class="g-height90 g-width100 g-fblight">
+		
+			<!-- Input a keyword | Left Half of page -->
+						
+			<div class="g-height100 g-width15 g-FL">
+
+
+				
+
+			</div>
+
+
+			<!-- Upload a new file | Right Half of page -->
+			<div class="g-height100 g-width70 g-FL g-border-color-red g-lightred">
+				<div class="g-height20 g-width100">
+					
+				</div>
+				<div class="g-height20 g-width100 g-centered-text g-text-green g-responsive-text-3">
+					UPLOAD Failed!!!
+
+				</div>
+				<div class="g-height20 g-width100 g-blue">
+					<form      
+						action='/upload_files' 
+						method='get' class="g-height100 g-width100">
+						<input type='submit' value='Try Again!!!' class="g-height100 g-width100"/>
+					</form>  					
+				</div>
+				<div class="g-height20 g-width100">
+
+					<form
+						action='/homepage' 
+						method='get' class="g-height100 g-width100">
+						<input type='submit' value='Back To homepage' class="g-height100 g-width100"/>
+					</form> 
+				</div>
+			</div>
+			
+			<!-- Upload a new file | Right Half of page -->
+			<div class="g-height100 g-width15 g-FL">
+
+				
+
+			</div>
+
+		</div>
+		
+		</div>
+
+	</body>
 </html>

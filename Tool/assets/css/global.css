@@ -77,6 +77,9 @@ a:hover, a:active {
 .g-purple{
     background-color: purple;
 }
+.g-lightpurple {
+    background-color: mediumpurple;
+}
 .g-gray {
     background-color: gray;
 }
@@ -103,8 +106,11 @@ a:hover, a:active {
 }
 .g-fb {
     background-color: #3b5998;
+ 
 }
-
+.g-fblight {
+    background-color: #4e71ba;
+}
 
 
 /* Use with I frames to make a div work well */
@@ -380,6 +386,10 @@ a:hover, a:active {
     color: purple;
 }
 
+.g-text-lightpurple {
+    color: mediumpurple;
+}
+
 .g-text-black {
     color: black;
 }
@@ -425,10 +435,9 @@ a:hover, a:active {
   border-style: solid;
   border-color: rgb(46, 185, 229);
 }
-.g-border-color-black{
-  border-style: solid;
-  border-color: black;
-    
+.g-border-color-black {
+    border-style: solid;
+    border-color: black;
 }
 .g-border-color-yellow {
     border-style: solid;

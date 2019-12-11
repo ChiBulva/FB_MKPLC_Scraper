@@ -2,7 +2,7 @@
 <html class="g-html-fit g-border-color-black">
 	<head>
 		
-		<!-- Title of the page if it is proided -->
+		<!-- Title of the page if it is provided -->
 		
 		<title>
 			<% if (locals.title) { %>
@@ -20,10 +20,20 @@
 
 	</head>
 
-	<body class="g-height100 g-width100 g-green g-consalas">
+		
 
-		<div class="g-height10 g-width100 g-fb g-centered-text g-responsive-text-5 g-FL">	
-			Simple FaceBook Tool: <% if (locals.title) { %> <%= title %> <% } %>
+	<body class="g-height100 g-width100 g-fblight g-consalas">
+		
+		<!--  --> 
+		
+		<div class="g-height3 g-width100">
+			
+		</div>
+
+		<div class="g-height94 g-width100">
+
+		<div class="g-height10 g-width100 g-fb g-centered-text g-text-white g-responsive-text-5 g-FL g-border-color-black">	
+			FaceBook Tool: <% if (locals.title) { %> <%= title %> <% } %>
 		</div>
 
 		<div class="g-height90 g-width100 g-lightgray">
@@ -56,20 +66,20 @@
 					<!-- Add results section here -->
 					<% if (locals.Base_URL_List) { %>
 						<div class="g-height80 g-width100 g-lightgreen g-border-color-green">
-							<div class="g-height10 g-width100 g-centered-text g-responsive-text-3 g-green">
+							<div class="g-height15 g-width100 g-centered-text g-responsive-text-3 g-green">
 								<% if (locals.keyword) { %>
 									Search results for "<%= keyword %>":
 								<% } %>
 							</div>
 					<% } else { %>
 						<div class="g-height80 g-width100 g-lightyellow g-border-color-yellow">
-							<div class="g-height10 g-width100 g-centered-text g-responsive-text-3 g-yellow">
+							<div class="g-height15 g-width100 g-centered-text g-responsive-text-3 g-yellow">
 								Submit a search to get results here
 							</div>
 					<% } %>
 					
 
-						<div class="g-height90 g-width100 g-scroll-a">
+						<div class="g-height85 g-width100 g-scroll-a">
 							<% if (locals.results) { %>
 								
 								<% var count = 0; %>
@@ -96,7 +106,7 @@
 
 				<!-- 10% -->
 				<form class="g-height10 g-width100" action='/upload_files' method='get'>
-					<input class="g-height100 g-width100" type='submit' value='Upload New Files' />
+					<input class="g-height100 g-width100" type='submit' value='Upload New File' />
 				</form>
 
 				<!-- 80% -->
@@ -119,15 +129,25 @@
 					<!-- 10% -->
 					<div class="g-height10 g-width100 g-red g-centered-text g-responsive-text-3 ">
 						<!-- Check to see if the files exist -->	
-							You will need to upload a file by clicking button above
+							Press button above to upload a file
 					</div>
 					<div class="g-height80 g-width100 g-lightred g-border-color-red g-scroll-a">
-						Please Upload a file
+						
 					</div>
 				<% } %>
 
 			</div>
 
 		</div>
+		
+		</div>
+		<div class="g-height3 g-red g-FR g-centered-text g-text-white">
+			<form      
+				action='/help' 
+				method='get' class="g-height100 g-width100">
+				<input type='submit' value='Help' class="g-height100 g-width100 g-text-white g-red"/>
+			</form>  
+		</div>
+
 	</body>
 </html>

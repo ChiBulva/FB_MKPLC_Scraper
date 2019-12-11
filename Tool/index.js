@@ -124,17 +124,34 @@ app.get('/upload_files', async (req, res) => {
 	res.render('upload_files', ejs_variables);
 })
 
+//  Help Screen
+//  Loads:      ./views/help.ejs
+//
+app.get('/help', async (req, res) => {
+	var ejs_variables = {};
+	ejs_variables.title = "Help";
+
+	// Assign css from here
+	ejs_variables.css = css_global;
+
+	// Optinal Print for error handling 
+	//console.log(testURL);
+
+	// Render the ./views/homepage.ejs template usign new ejs object
+	res.render('help', ejs_variables);
+})
+
 //  Results from Homepage
 //  Loads:      ./views/results.ejs
 //
 app.get('/results', async (req, res) => {
-	req.setTimeout(600000);
-
+	req.setTimeout(500000);
     // Reserve a variable to pass arguments for the EJS component
 	var ejs_variables = {};
 
     // Assign css from here
-    ejs_variables.css = css_global;
+	ejs_variables.css = css_global;
+
 	try {
 
 		try {
@@ -207,7 +224,10 @@ app.get('/results', async (req, res) => {
 app.post('/upload', async (req, res) => {
 	var ejs_variables = {};
 	ejs_variables.title = "Successful Upload";
-	
+
+	// Assign css from here
+	ejs_variables.css = css_global;
+
 	//let uploadPath;
 	let Locations_File
 	let Locations_FilePath
@@ -234,7 +254,17 @@ app.post('/upload', async (req, res) => {
 });
 
 //Run application on a specific port
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => {
+	
+	console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	console.log(`+  Facebook tool application listening on port ${port}!`)
+	console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	console.log("     1. Open Google Chrome Browser                     +");
+	console.log("     2. Navigate to: ");
+	console.log(`              localhost:${port}/homepage`);
+	console.log("+                                                      +");
+	console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+});
 
 /*
  * 
