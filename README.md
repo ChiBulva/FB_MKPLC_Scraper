@@ -18,35 +18,22 @@ Final product should allow user to open the tool, then search for a keyword and 
 
 2. Download Node.js at this link: [Node.js](https://nodejs.org/dist/v12.13.1/node-v12.13.1-x64.msi)
 
-3. Click the "Clone or Download" button on this GitHub page. Move the file to a location you want the app to run. 
+3. Click the "Clone or Download" button on this GitHub page. Move the file to a location you want the app to run. Un-Zip the file.
 
 4. Open a command prompt in windows. (Type "cmd" into bottom letfhand search bar)
 
 5. Navigate to the application folder by typing this into the commant prompt
 ```bash
-cd <Path_To_Application>
+cd <Path_To_Application> // This should move you to the folder the application is in
 ```
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
-
+6. Type this command into prompt to install dependencies  
 ```bash
 npm install
 ```
 
-## Usage
+7. Right click the "appstart.bat" file in the "Tool" folder and make a shortcut. Move this to the desktop (You can rename this).
 
-```python
-import foobar
+8. Run the application by double clicking the new shortcut.
 
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
-```
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+9. Open the Opera Browser and type "localhost:3000/homepage" into the URL bar
