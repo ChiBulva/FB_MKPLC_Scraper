@@ -17,7 +17,7 @@ Final product should allow user to open the tool, then search for a keyword and 
 
 5. Navigate to the application folder by typing this into the commant prompt 
 ```bash
-cd <Path_To_Application> // This should move you to the folder the application is in
+cd <Path_To_Application>
 
 // Example 
 cd C:\Users\User\Downloads\FB_MKPLC_Scraper-master\FB_MKPLC_Scraper-master\Tool
