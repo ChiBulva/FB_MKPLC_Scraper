@@ -13,7 +13,7 @@ Final product should allow user to open the tool, then search for a keyword and 
 
 4. Open a command prompt in windows. (Type "cmd" into bottom letfhand search bar)
 
-** Note Application is located inside of the tool folder **
+- ** Note Application is located inside of the tool folder **
 
 5. Navigate to the application folder by typing this into the commant prompt 
 ```bash
