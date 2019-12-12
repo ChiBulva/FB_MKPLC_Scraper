@@ -14,14 +14,23 @@ Final product should allow user to open the tool, then search for a keyword and 
 
 ## Installation
 
-Download the Opera browser at this link: [OPERA](https://www.opera.com/computer/thanks?ni=stable&os=windows)
+1. Download the Opera browser at this link: [OPERA](https://www.opera.com/computer/thanks?ni=stable&os=windows)
 
-Download Node.js at this link: [Node.js](https://nodejs.org/dist/v12.13.1/node-v12.13.1-x64.msi)
+2. Download Node.js at this link: [Node.js](https://nodejs.org/dist/v12.13.1/node-v12.13.1-x64.msi)
+
+3. Click the "Clone or Download" button on this GitHub page. Move the file to a location you want the app to run. 
+
+4. Open a command prompt in windows. (Type "cmd" into bottom letfhand search bar)
+
+5. Navigate to the application folder by typing this into the commant prompt
+```bash
+cd <Path_To_Application>
+```
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
 ```bash
-pip install foobar
+npm install
 ```
 
 ## Usage
