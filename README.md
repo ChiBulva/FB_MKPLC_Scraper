@@ -1,12 +1,3 @@
-# 1.
-Open Marketplace 
-
-# 2.
-Submit a location Search for each Zip then save each resulting url 
-
-# 3.
-Submit a Search based of these urls
-
 # Facebook Marketplace Scraper
 
 Final product should allow user to open the tool, then search for a keyword and zipcode and radius.
@@ -22,7 +13,9 @@ Final product should allow user to open the tool, then search for a keyword and 
 
 4. Open a command prompt in windows. (Type "cmd" into bottom letfhand search bar)
 
-5. Navigate to the application folder by typing this into the commant prompt
+** Note Application is located inside of the tool folder **
+
+5. Navigate to the application folder by typing this into the commant prompt 
 ```bash
 cd <Path_To_Application> // This should move you to the folder the application is in
 ```
