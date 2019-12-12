@@ -7,42 +7,10 @@
  *  Language:   Node.js (JavaScript), Html, Css
  *  
  *  Links:  ./api/*
- *          ./views/*
+ *          ./views/variables/*
+ *          ./views/css/*
  * 
  *************************************************************************************************************************/
-
-/*
-Possible JSON Object:
-	{
-		title: "Homepage" | "Results" | "Successful Upload" | "Un-Successful Upload",
-		css: "global.css",
-		List_Of_Zips: [
-			take from file given
-		].
-		Files_Exist: "yes",
-		keyword: "Some phrase here",
-
-		Base_URL_List: [
-			
-		],
-
-		Zip_Code_List: [
-			
-		]
-	
-		results: [
-		
-			[
-				List of URL's
-			],
-
-			[
-				List of Zip codes
-			]
-		]
-
-	}
-*/
 
 /*  /   Modules created by Travis C. J. Gray for personal use in this applicaiton
  * /
@@ -98,30 +66,9 @@ app.get('/homepage', async (req, res) => {
 	catch {
 			
 	}
-    // Optinal Print for error handling 
-	//console.log(testURL);
-
-	console.log(ejs_variables);
 	
     // Render the ./views/homepage.ejs template usign new ejs object
 	res.render('homepage', ejs_variables);
-})
-
-//  Upload Files 
-//  Loads:      ./views/upload_files.ejs
-//
-app.get('/upload_files', async (req, res) => {
-	var ejs_variables = {};
-    ejs_variables.title = "upload_files";
-
-    // Assign css from here
-    ejs_variables.css = css_global;
-
-    // Optinal Print for error handling 
-	//console.log(testURL);
-
-    // Render the ./views/homepage.ejs template usign new ejs object
-	res.render('upload_files', ejs_variables);
 })
 
 //  Help Screen
@@ -133,9 +80,6 @@ app.get('/help', async (req, res) => {
 
 	// Assign css from here
 	ejs_variables.css = css_global;
-
-	// Optinal Print for error handling 
-	//console.log(testURL);
 
 	// Render the ./views/homepage.ejs template usign new ejs object
 	res.render('help', ejs_variables);
@@ -165,62 +109,49 @@ app.get('/results', async (req, res) => {
 		// Grabs viarables passed in through the URL
 		var Key_Word = req.query.keyword.replace(/ /g, "+");
 		var Browser_Toggle = req.query.browser_toggle;
-		//var Zip_Code = req.query.zipcode;
-		//var Radius = req.query.radius;
 
-		console.log("\n");
-		console.log(Browser_Toggle);
-		console.log("\n");
-
-		/* --> */
 		// Assignmnet of EJS variables for results
 		ejs_variables.title = "Results";
 		ejs_variables.keyword = Key_Word.replace("+", " ");
-		//ejs_variables.zipcode = Zip_Code;
-		//ejs_variables.radius = Radius;
-
-		// These three variables have to exist to result in a radius
-		/*if (Key_Word) {
-	
-			// Reaches out to ./api/Zip_Code_Functions.js to collect all zipcodes within a range
-			var Zip_Code_List = await Zip_Code_Functions.GetAllZipsInRadius(Zip_Code, Radius);;
-	
-			// Adds the new list to ejs item
-			ejs_variables.Zip_Code_List = Zip_Code_List;
-	
-			// Optinal Print for error handling 
-			//console.log(ejs_variables);
-		}*/
 
 		var Zip_Code_List = await fs.readFileSync('./assets/variables/Locations_File.txt', 'utf8').toString().split("\n");
-
-		/* <-- */
 
 		// Reaches to ./api/Search_FaceBook.js to find base URL's for a list of Zips	
 		var Results = await Search_FaceBook.Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle);
 
-		console.log(Results);
+        // Save File Here From Search
+        await Save_A_Search(Results[0], Key_Word);
 
 		// Adds the new URL list to ejs item
-		ejs_variables.Base_URL_List = Results[0];
-		ejs_variables.Zip_Code_List = Results[1];
+        ejs_variables.Base_URL_List = Results[0]; // Base_URL_List
+        ejs_variables.Zip_Code_List = Results[1]; // Zip_Code_List
 		ejs_variables.results = Results;
-		// Optinal Print for error handling
-		//console.log(Base_URL_List);
 	}
 	catch{
 
 	}
     // Render the ./views/results.ejs template usign new ejs object
 	res.render('homepage', ejs_variables);
-	//res.render('results', ejs_variables);
 
 })
 
+//  Upload Files 
+//  Loads:      ./views/upload_files.ejs
+//
+app.get('/upload_files', async (req, res) => {
+    var ejs_variables = {};
+    ejs_variables.title = "upload_files";
 
+    // Assign css from here
+    ejs_variables.css = css_global;
 
-// File upload
-//app.post('/upload', function(req, res) {
+    // Render the ./views/homepage.ejs template usign new ejs object
+    res.render('upload_files', ejs_variables);
+})
+
+//  File upload
+//  Loads:      ./views/successful_upload.ejs or ./views/unsuccessful_upload.ejs
+//
 app.post('/upload', async (req, res) => {
 	var ejs_variables = {};
 	ejs_variables.title = "Successful Upload";
@@ -237,8 +168,6 @@ app.post('/upload', async (req, res) => {
 		res.render('unsuccessful_upload', ejs_variables)
 	}
 
-	console.log('req.files >>>', req.files); // eslint-disable-line
-
 	Locations_File = req.files.Locations_File;
 
 	Locations_FilePath = __dirname + '/assets/variables/Locations_File.txt';
@@ -253,6 +182,28 @@ app.post('/upload', async (req, res) => {
 	res.render('successful_upload', ejs_variables)
 });
 
+async function Save_A_Search(List_Of_URLs, Key_Word) {
+    Key_Word = Key_Word.replace('+', '_');
+    var dt = new Date();
+    var CurDate = dt.getFullYear() + '_' + (((dt.getMonth() + 1) < 10) ? '0' : '') + (dt.getMonth() + 1) + '_' + ((dt.getDate() < 10) ? '0' : '') + dt.getDate();
+
+    fs.writeFile(
+
+        `./assets/old_searches/${Key_Word}_${CurDate}.txt`,
+
+        List_Of_URLs.toString().replace(',','\n'),
+
+        await function (err) {
+            if (err) {
+                console.error('Crap happens');
+            }
+        }
+    );
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    console.log(`+  saved as: ./assets/old_searches/${Key_Word}_${CurDate}.txt`)
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+}
+
 //Run application on a specific port
 app.listen(port, () => {
 	
@@ -265,44 +216,3 @@ app.listen(port, () => {
 	console.log("+                                                      +");
 	console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 });
-
-/*
- * 
- *  CODE Graveyard 
- * 
- * /
-
-// Used for finding Zipcodes
-
-/*
-var Print = "True"; // Can be toggled
-
-var City = process.argv[2];
-var State = process.argv[3];
-var Zip_Code = process.argv[4];
-
-console.log("ZipGivenCity:\n")
-console.log(Zip_Code_Functions.ZipGivenCity(City, State));
-
-console.log("CityGivenZip:\n")
-console.log(Zip_Code_Functions.CityGivenZip(Zip_Code));
-
-console.log("GetAllZipsInRadius:\n")
-console.log(Zip_Code_Functions.GetAllZipsInRadius(Zip_Code, 25));
-*/
-
-// Found this after assignment of variables in results
-
-/*
-	//Zip_Code_List.forEach(function(value){
-	//	console.log(value);
-	//});
-
-
-	//Zip_Code_List.forEach(function(value){
-	//	console.log(value);
-	//});
-
-	//var testURL = await Search_FaceBook.Find_Zip_URL(Zip_Code);
-	//ejs_variables.firstURL = testURL;
-*/
