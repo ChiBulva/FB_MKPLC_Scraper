@@ -50,7 +50,7 @@
 
 			<!-- Upload a new file | Right Half of page -->
 			<div class="g-height100 g-width70 g-FL g-border-color-green g-lightgreen">
-				<div class="g-height15 g-width100 g-centered-text g-responsive-text-3">
+				<div class="g-height15 g-width70 g-centered-text g-responsive-text-3 g-FL">
 					<% if (locals.Search_File_Contents.Search) { %>
 						<%= Search_File_Contents.Search %>
 					<% } else { %>
@@ -58,6 +58,18 @@
 					<% } %>
 					<% if (locals.Search_File_Contents.Date) { %>
 						<%= Search_File_Contents.Date %>
+					<% } %>
+				</div>
+				<div class="g-height15 g-width30 g-centered-text g-responsive-text-3 g-FR">
+					<% if (locals.Search_File_Contents.min) { %>
+						Min: <%= Search_File_Contents.min %></br>
+					<% } else { %>
+						Min: None
+					<% } %>
+					<% if (locals.Search_File_Contents.max) { %>
+						Max: <%= Search_File_Contents.max %></br>
+					<% } else { %>
+						Max: None
 					<% } %>
 				</div>
 				<div class="g-height75 g-width100 g-scroll-a">

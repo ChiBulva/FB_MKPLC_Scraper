@@ -2,7 +2,8 @@ const puppeteer = require('puppeteer');
 
 // Takes a lsit of Zip codes and finds URL's to Facebook marketplace querys
 //
-async function Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle, Key_Word_Spaces) {
+//async function Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle, Key_Word_Spaces) {
+async function Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle, Key_Word_Spaces, Add_Min_Bool, Add_Max_Bool) {
 
     if (Browser_Toggle == "on") {
         var chromium_args = {
@@ -53,14 +54,28 @@ async function Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle, Key_Wo
             // Wait for page to load
             await page.waitForNavigation();
 
-            console.log('* New Page URL:\n*\t', page.url() + `search/?query=${Key_Word}&vertical=C2C&sort=BEST_MATCH`);
+            var Add_Min = "";
+            var Add_Max = "";
 
+            if (Add_Min_Bool) {
+                //console.log("Add_Min_Bool Exists");
+                Add_Min = `&minPrice=${Add_Min_Bool}`;
+            }
+            if (Add_Max_Bool) {
+                //console.log("Add_Max_Bool Exists");
+                Add_Max = `&maxPrice=${Add_Max_Bool}`;
+            }
+
+            var URL_To_Add = page.url() + `search/?query=${Key_Word}${Add_Min}${Add_Max}&vertical=C2C&sort=BEST_MATCH`;
+
+            console.log('* New Page URL:\n*\t', URL_To_Add);
+            
             // Adds URL to list and adds the search query to the URL
-            Zip_Code_List_URLs.push(page.url() + `search/?query=${Key_Word}&vertical=C2C&sort=BEST_MATCH`);
+            Zip_Code_List_URLs.push(URL_To_Add);
             Zip_Code_List_worked.push(Zip_Code);
 
 			// Requested by user
-			await page.goto(page.url() + `search/?query=${Key_Word}&vertical=C2C&sort=BEST_MATCH`);
+            await page.goto(URL_To_Add);
         }
         catch {
             console.log('No Zip Code Found');

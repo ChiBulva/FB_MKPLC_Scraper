@@ -112,23 +112,30 @@ app.get('/results', async (req, res) => {
 		// Grabs viarables passed in through the URL
 		var Key_Word = req.query.keyword.replace(/ /g, "+");
 		var Browser_Toggle = req.query.browser_toggle;
+		var Add_Min_Bool = req.query.Add_Min_Bool;
+		var Add_Max_Bool = req.query.Add_Max_Bool;
 
 		// Assignmnet of EJS variables for results
 		ejs_variables.title = "Results";
 		ejs_variables.keyword = Key_Word.replace("+", " ");
-
+		
 		var Zip_Code_List = await fs.readFileSync('./assets/variables/Locations_File.txt', 'utf8').toString().split("\n");
 
 		// Reaches to ./api/Search_FaceBook.js to find base URL's for a list of Zips	
-		var Results = await Search_FaceBook.Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle, req.query.keyword);
+		var Results = await Search_FaceBook.Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle, req.query.keyword, Add_Min_Bool, Add_Max_Bool);
 
         // Save File Here From Search
-		await Save_A_Search(Results, req.query.keyword.replace(/ /g, "_"));
-
+		try {
+			await Save_A_Search(Results, req.query.keyword.replace(/ /g, "_"), Add_Min_Bool, Add_Max_Bool);
+		}
+		catch{
+			console.log("Error Saving file");
+		}
 		// Adds the new URL list to ejs item
         ejs_variables.Base_URL_List = Results[0]; // Base_URL_List
         ejs_variables.Zip_Code_List = Results[1]; // Zip_Code_List
 		ejs_variables.results = Results;
+
 	}
 	catch{
 
@@ -191,7 +198,7 @@ app.get('/old_searches/:old_searche_file', async (req, res) => {
 //
 app.get('/delete_old_search/:old_searche_file', async (req, res) => {
 	var ejs_variables = {};
-	ejs_variables.title = "Old Searches ( Delete Success )";
+	ejs_variables.title = "Old Searches";
 
 	// Assign Name of file based off parameters
 	var Search_File_Path = req.params.old_searche_file;
@@ -270,7 +277,7 @@ app.post('/upload', async (req, res) => {
 	res.render('successful_upload', ejs_variables)
 });
 
-async function Save_A_Search(Results, Key_Word) {
+async function Save_A_Search(Results, Key_Word, Add_Min_Bool, Add_Max_Bool) {
 
     var dt = new Date();
     var CurDate = dt.getFullYear() + '_' + (((dt.getMonth() + 1) < 10) ? '0' : '') + (dt.getMonth() + 1) + '_' + ((dt.getDate() < 10) ? '0' : '') + dt.getDate();
@@ -283,9 +290,25 @@ async function Save_A_Search(Results, Key_Word) {
 	Search_Object_JSON.Search = Key_Word;
 	Search_Object_JSON.Date = CurDate_Slashes;
 
+	var Add_Min = "";
+	var Add_Max = "";
+
+	if (Add_Min_Bool) {
+		//console.log("Add_Min_Bool Exists");
+		Add_Min = `_${Add_Min_Bool}`;
+		Search_Object_JSON.min = Add_Min_Bool;
+	}
+	if (Add_Max_Bool) {
+		//console.log("Add_Max_Bool Exists");
+		Add_Max = `_${Add_Max_Bool}`;
+		Search_Object_JSON.max = Add_Max_Bool;
+	}
+
+	var File_Path = `./assets/old_searches/${Key_Word}${Add_Min}${Add_Max}_${CurDate}.json`
+
     fs.writeFile(
 
-		`./assets/old_searches/${Key_Word}_${CurDate}.json`,
+		File_Path,
 
 		JSON.stringify(Search_Object_JSON),
 
@@ -296,7 +319,7 @@ async function Save_A_Search(Results, Key_Word) {
         }
     );
     console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    console.log(`+  saved as: ./assets/old_searches/${Key_Word}_${CurDate}.txt`)
+    console.log(`+  saved as: ./assets/old_searches/${Key_Word}${Add_Min}${Add_Max}_${CurDate}.txt`)
     console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 }
 

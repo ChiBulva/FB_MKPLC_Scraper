@@ -44,24 +44,28 @@
 
 
 				<form class="g-height100 g-width100" action="results" method="get">
-
-					<!-- 10% -->
-					<input class="g-height10 g-width100" type="text" name="keyword" placeholder="keyword" required/>
-					
-					<!-- 10% -->
+					<div class="g-height20 g-width100">
 					<% if (locals.Files_Exist) { %>
-						<div class="g-height10 g-width100">
-							<input class="g-height100 g-width50 g-FL" type="submit" value="Submit Search"/>
-							<div class="g-height100 g-width50 g-border-color-orange g-lightorange g-FR">
-								Open Browser toggle: <input type="checkbox" name="browser_toggle" checked/>
+
+						<!-- 10% -->
+						<input class="g-height50 g-width70" type="text" name="keyword" placeholder="keyword" required/>
+						<!-- 10% -->
+						<div class="g-height100 g-width30 g-FR">
+							<div class="g-height100 g-width100 g-border-color-orange g-lightorange g-FR">
+								Open Browser toggle: <input  type="checkbox" name="browser_toggle" checked/></br>
+								Min: <input class="g-width50" type="number" name="Add_Min_Bool"/></br>
+								Max: <input class="g-width50" type="number" name="Add_Max_Bool"/>
 							</div>
 						</div>
+						<input class="g-height50 g-width70" type="submit" value="Submit Search"/>
+
 					<% } else{ %> 
 						<div class="g-height10 g-width100">
 							You'll need to upload a	file full of valid locations
 						</div>
 					<% } %>
 
+					</div>
 					<!-- 80% -->
 					<!-- Add results section here -->
 					<% if (locals.Base_URL_List) { %>
