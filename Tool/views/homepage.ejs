@@ -117,7 +117,7 @@
 						<!-- Check to see if the files exist -->	
 							Current Locations that will be searched: <%= List_Of_Zips.length %> Total
 					</div>
-					<div class="g-height80 g-width100 g-lightgreen g-border-color-green g-scroll-a">
+					<div class="g-height70 g-width100 g-lightgreen g-border-color-green g-scroll-a">
 						<% List_Of_Zips.forEach(function(Location){ %>
 							<%= Location %>
 							</br>
@@ -131,10 +131,18 @@
 						<!-- Check to see if the files exist -->	
 							Press button above to upload a file
 					</div>
-					<div class="g-height80 g-width100 g-lightred g-border-color-red g-scroll-a">
+					<div class="g-height70 g-width100 g-lightred g-border-color-red g-scroll-a">
 						
 					</div>
 				<% } %>
+				<div class="g-height10 g-width100">
+
+					<form
+						action='/old_searches' 
+						method='get' class="g-height100 g-width100">
+						<input type='submit' value='Old Searches' class="g-height100 g-width100"/>
+					</form> 
+				</div>
 
 			</div>
 

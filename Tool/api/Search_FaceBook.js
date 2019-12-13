@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 
 // Takes a lsit of Zip codes and finds URL's to Facebook marketplace querys
 //
-async function Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle) {
+async function Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle, Key_Word_Spaces) {
 
     if (Browser_Toggle == "on") {
         var chromium_args = {
@@ -25,7 +25,7 @@ async function Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle) {
 
     console.log("\n************");
     console.log(`*`);
-    console.log(`* Start of the new search for: ${Key_Word}`);
+    console.log(`* Start of the new search for: ${Key_Word_Spaces}`);
     console.log(`*`);
 
     //Zip_Code_List.forEach( async function(Zip_Code){

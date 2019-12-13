@@ -4,9 +4,10 @@
     "\\api",
     "\\assets",
     "\\assets\\css",
+    "\\assets\\old_searches",
     "\\assets\\variables",
     "\\views"
   ],
-  "SelectedNode": "\\index.js",
+  "SelectedNode": "\\assets\\variables\\.gitkeep",
   "PreviewInSolutionExplorer": false
 }

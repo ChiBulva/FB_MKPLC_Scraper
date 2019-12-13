@@ -34,7 +34,10 @@ app.use(bodyParser.urlencoded({ extended: true }));             //  BP
 app.use(fileUpload());
 
 // include css here 
-var css_global =  fs.readFileSync('./assets/css/global.css', 'utf8');
+var css_global = fs.readFileSync('./assets/css/global.css', 'utf8');
+
+// Old_Searches Path
+var Old_Searches_Path = './assets/old_searches';
 
 //   This is the port that the application will run on
 //
@@ -117,10 +120,10 @@ app.get('/results', async (req, res) => {
 		var Zip_Code_List = await fs.readFileSync('./assets/variables/Locations_File.txt', 'utf8').toString().split("\n");
 
 		// Reaches to ./api/Search_FaceBook.js to find base URL's for a list of Zips	
-		var Results = await Search_FaceBook.Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle);
+		var Results = await Search_FaceBook.Find_Zip_List_URL(Zip_Code_List, Key_Word, Browser_Toggle, req.query.keyword);
 
         // Save File Here From Search
-        await Save_A_Search(Results[0], Key_Word);
+		await Save_A_Search(Results, req.query.keyword.replace(/ /g, "_"));
 
 		// Adds the new URL list to ejs item
         ejs_variables.Base_URL_List = Results[0]; // Base_URL_List
@@ -133,6 +136,91 @@ app.get('/results', async (req, res) => {
     // Render the ./views/results.ejs template usign new ejs object
 	res.render('homepage', ejs_variables);
 
+})
+
+//  Old Searches 
+//  Loads:      ./views/old_searches.ejs
+//
+app.get('/old_searches', async (req, res) => {
+	var ejs_variables = {};
+	ejs_variables.title = "Old Searches";
+
+	// Assign css from here
+	ejs_variables.css = css_global;
+
+	var List_Of_Searches = [];
+
+
+	// Get contents of old Searches file and display them
+	await fs.readdirSync(Old_Searches_Path).forEach(file => {
+		if (file != ".gitkeep") {
+			List_Of_Searches.push([file.replace(/_/g, ' ').replace(".json", ''), file]);
+		}
+	});
+
+	ejs_variables.List_Of_Searches = List_Of_Searches;
+
+	// Render the ./views/homepage.ejs template usign new ejs object
+	res.render('old_searches', ejs_variables);
+})
+
+//  Old Searches (Indivudual Page)
+//  Loads:      ./views/old_searches_individual.ejs
+//
+app.get('/old_searches/:old_searche_file', async (req, res) => {
+	var ejs_variables = {};
+	ejs_variables.title = "Old Searches";
+
+	// Assign Name of file based off parameters
+	var Search_File_Path = req.params.old_searche_file;
+
+	// Assign css from here
+	ejs_variables.css = css_global;
+
+	// TODO: Go grab specific JSON Onject based on name
+	var Search_File_Contents = await fs.readFileSync(`./assets/old_searches/${Search_File_Path}`, 'utf8').toString().split("\n");
+
+	ejs_variables.Search_File_Contents = JSON.parse(Search_File_Contents);
+
+	// Render the ./views/homepage.ejs template usign new ejs object
+	res.render('old_searches_individual_page', ejs_variables);
+})
+
+//  Delete Old Search Files 
+//  Loads:      ./views/old_searches.ejs
+//
+app.get('/delete_old_search/:old_searche_file', async (req, res) => {
+	var ejs_variables = {};
+	ejs_variables.title = "Old Searches ( Delete Success )";
+
+	// Assign Name of file based off parameters
+	var Search_File_Path = req.params.old_searche_file;
+
+	// Assign css from here
+	ejs_variables.css = css_global;
+
+	fs.unlinkSync(`./assets/old_searches/${ Search_File_Path }`, (err) => {
+		if (err) {
+			console.error(err)
+			return
+		}
+
+		console.log(`Removed: ${ Search_File_Path }`);
+	})
+
+	var List_Of_Searches = [];
+
+	// Get contents of old Searches file and display them
+	fs.readdirSync(Old_Searches_Path).forEach(file => {
+		if (file != ".gitkeep") {
+			List_Of_Searches.push([file.replace(/_/g, ' ').replace(".json", ''), file]);
+		}
+	});
+
+	ejs_variables.List_Of_Searches = List_Of_Searches;
+
+	// Render the ./views/homepage.ejs template usign new ejs object
+	res.render('old_searches', ejs_variables);
 })
 
 //  Upload Files 
@@ -182,16 +270,24 @@ app.post('/upload', async (req, res) => {
 	res.render('successful_upload', ejs_variables)
 });
 
-async function Save_A_Search(List_Of_URLs, Key_Word) {
-    Key_Word = Key_Word.replace('+', '_');
+async function Save_A_Search(Results, Key_Word) {
+
     var dt = new Date();
     var CurDate = dt.getFullYear() + '_' + (((dt.getMonth() + 1) < 10) ? '0' : '') + (dt.getMonth() + 1) + '_' + ((dt.getDate() < 10) ? '0' : '') + dt.getDate();
+	var CurDate_Slashes = dt.getFullYear() + '/' + (((dt.getMonth() + 1) < 10) ? '0' : '') + (dt.getMonth() + 1) + '/' + ((dt.getDate() < 10) ? '0' : '') + dt.getDate();
+
+	var Search_Object_JSON = {}
+
+	Search_Object_JSON.Results = Results;
+
+	Search_Object_JSON.Search = Key_Word;
+	Search_Object_JSON.Date = CurDate_Slashes;
 
     fs.writeFile(
 
-        `./assets/old_searches/${Key_Word}_${CurDate}.txt`,
+		`./assets/old_searches/${Key_Word}_${CurDate}.json`,
 
-        List_Of_URLs.toString().replace(',','\n'),
+		JSON.stringify(Search_Object_JSON),
 
         await function (err) {
             if (err) {

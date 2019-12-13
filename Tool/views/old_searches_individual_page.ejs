@@ -50,27 +50,40 @@
 
 			<!-- Upload a new file | Right Half of page -->
 			<div class="g-height100 g-width70 g-FL g-border-color-green g-lightgreen">
-				<div class="g-height20 g-width100">
-					Step 1: Upload file full of locations ( They can be Zip Codes or City names )
+				<div class="g-height15 g-width100 g-centered-text g-responsive-text-3">
+					<% if (locals.Search_File_Contents.Search) { %>
+						<%= Search_File_Contents.Search %>
+					<% } else { %>
+						No File Found
+					<% } %>
+					<% if (locals.Search_File_Contents.Date) { %>
+						<%= Search_File_Contents.Date %>
+					<% } %>
 				</div>
-				<div class="g-height20 g-width100">
-					Step 2: Toggle opening browser off or on
-				</div>
-				<div class="g-height20 g-width100">
-					Step 3: Type in a phrase to search for and click the search button
-				</div>
-				<div class="g-height20 g-width100">
-					Step 4: Wait for results. This will have both half of the screens colored green.
-				</div>
-				<div class="g-height10 g-width100">
-					You can see old results by clicking the "Old Searches" button on homepage
+				<div class="g-height75 g-width100 g-scroll-a">
+					<div class="g-height100 g-width100"> 
+					<% if (locals.Search_File_Contents.Results[0]) { %>
+						<% var count = 0; %>
+						<% Search_File_Contents.Results[0].forEach(function(URL){ %>
+							<a class="g-height33- g-width33- g-centered-text g-FL g-no-dec g-border-color-green" href="<%= URL %>" target="_blank">
+									Click to open URL for: <%= Search_File_Contents.Results[1][count] %>
+							</a>
+							<% count = count + 1; %>
+						<% }) %>
+					<% } %>
+					</div>
 				</div>
 				<div class="g-height10 g-width100">
 					<form
 						action='/homepage' 
-						method='get' class="g-height100 g-width100">
+						method='get' class="g-height100 g-width50 g-FL">
 						<input type='submit' value='Back To homepage' class="g-height100 g-width100"/>
 					</form> 
+					<form
+						action='/old_searches' 
+						method='get' class="g-height100 g-width50 g-FR">
+						<input type='submit' value='Back To Old Searches' class="g-height100 g-width100"/>
+					</form>
 				</div>
 			</div>
 			

@@ -40,37 +40,40 @@
 		
 			<!-- Input a keyword | Left Half of page -->
 						
-			<div class="g-height100 g-width15 g-FL">
-
-
-				
-
-			</div>
+			<div class="g-height100 g-width15 g-FL"></div>
 
 
 			<!-- Upload a new file | Right Half of page -->
 			<div class="g-height100 g-width70 g-FL g-border-color-green g-lightgreen">
-				<div class="g-height20 g-width100">
-					Step 1: Upload file full of locations ( They can be Zip Codes or City names )
+				<div class="g-height10 g-width100 g-centered-text g-responsive-text-3">
+					Saved Searches
 				</div>
-				<div class="g-height20 g-width100">
-					Step 2: Toggle opening browser off or on
-				</div>
-				<div class="g-height20 g-width100">
-					Step 3: Type in a phrase to search for and click the search button
-				</div>
-				<div class="g-height20 g-width100">
-					Step 4: Wait for results. This will have both half of the screens colored green.
-				</div>
-				<div class="g-height10 g-width100">
-					You can see old results by clicking the "Old Searches" button on homepage
+				<div class="g-height80 g-width100 g-scroll-a">
+					<% if (locals.List_Of_Searches) { %>
+						<% List_Of_Searches.forEach(function(Search){ %>
+							<div class="g-height10 g-width90 g-FL">
+								<form
+									action='/old_searches/<%= Search[1] %>' 
+									method='get' class="g-height100 g-width100">
+									<input type='submit' value='<%= Search[0] %>' class="g-height100 g-width100"/>
+								</form> 
+							</div>
+							<div class="g-height10 g-width10 g-FR">
+								<form
+									action='/delete_old_search/<%= Search[1] %>' 
+									method='get' class="g-height100 g-width100">
+									<input type='submit' value='X' class="g-height100 g-width100 g-red"/>
+								</form> 
+							</div>
+						<% }) %>
+					<% } %>
 				</div>
 				<div class="g-height10 g-width100">
 					<form
 						action='/homepage' 
 						method='get' class="g-height100 g-width100">
 						<input type='submit' value='Back To homepage' class="g-height100 g-width100"/>
-					</form> 
+					</form>
 				</div>
 			</div>
 			
